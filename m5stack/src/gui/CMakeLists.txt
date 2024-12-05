@@ -9,6 +9,7 @@ SET(SOURCES ui_Screen1.c
     ui_img_999427845.c
     ui_img_humi_png.c
     ui_img_wifi1_png.c
-    ui_img_cloud1_png.c)
+    ui_img_cloud1_png.c
+    ui_img_655432441.c)
 
 add_library(ui ${SOURCES})

@@ -18,7 +18,6 @@ lv_obj_t * ui_Image2;
 lv_obj_t * ui_Image3;
 lv_obj_t * ui_Image4;
 lv_obj_t * ui_Image5;
-lv_obj_t * ui_Image6;
 lv_obj_t * ui_Label1;
 lv_obj_t * ui_press;
 lv_obj_t * ui_Label3;
@@ -30,6 +29,9 @@ lv_obj_t * ui_Spinbox2;
 lv_obj_t * ui_time;
 lv_obj_t * ui_temp;
 lv_obj_t * ui_Label9;
+lv_obj_t * ui_ImgButton1;
+lv_obj_t * ui_Container1;
+lv_obj_t * ui_Label2;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Screen1;
 
@@ -38,8 +40,10 @@ lv_obj_t * uic_Screen1;
 void ui_Screen2_screen_init(void);
 void ui_event_Screen2(lv_event_t * e);
 lv_obj_t * ui_Screen2;
-lv_obj_t * ui_Checkbox1;
-lv_obj_t * ui_Button2;
+lv_obj_t * ui_Container2;
+lv_obj_t * ui_ImgButton2;
+lv_obj_t * ui_Label4;
+lv_obj_t * ui_Label7;
 // CUSTOM VARIABLES
 
 // EVENTS
@@ -67,7 +71,7 @@ void ui_event_Screen1(lv_event_t * e)
 
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
         lv_indev_wait_release(lv_indev_get_act());
-        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
+        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0, &ui_Screen2_screen_init);
     }
 }
 
@@ -78,7 +82,7 @@ void ui_event_Screen2(lv_event_t * e)
     if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
         lv_indev_wait_release(lv_indev_get_act());
         custommmm(e);
-        _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen1_screen_init);
+        _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, &ui_Screen1_screen_init);
     }
 }
 

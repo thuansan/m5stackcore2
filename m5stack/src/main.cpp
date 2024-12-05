@@ -1,6 +1,7 @@
 #include <M5Unified.h>
 #include <lvgl.h>
 #include "gui/ui.h"
+#include <test.h>
 
 
 /*Change to your screen resolution*/
@@ -9,6 +10,25 @@ static const uint16_t screenHeight = 240;
 
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * screenHeight / 10];
+
+struct rtc_time_t {
+    std::int8_t hours;
+    std::int8_t minutes;
+    std::int8_t seconds;
+
+    rtc_time_t(std::int8_t hours_ = -1, std::int8_t minutes_ = -1, std::int8_t seconds_ = -1)
+        : hours(hours_), minutes(minutes_), seconds(seconds_) {}
+};
+
+struct rtc_date_t {
+    std::int16_t year;
+    std::int8_t month;
+    std::int8_t date;
+    std::int8_t weekDay;
+
+    rtc_date_t(std::int16_t year_ = 2000, std::int8_t month_ = 1, std::int8_t date_ = -1, std::int8_t weekDay_ = -1)
+        : year(year_), month(month_), date(date_), weekDay(weekDay_) {}
+};
 
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
@@ -73,35 +93,28 @@ void lvgl_driver_init() {
 }
 
 void update_time_label() {
-    // Biến lưu trữ thông tin thời gian và ngày tháng
-    uint8_t hour, minute, second;
-    uint8_t day, month;
-    uint16_t year;
+    // Lấy thời gian và ngày tháng từ RTC
+    rtc_time_t rtc_time;
+    rtc_date_t rtc_date;
 
-    // Kiểm tra và lấy thời gian từ RTC
-    if (M5.Rtc.getTime(&hour, &minute, &second) && M5.Rtc.getDate(&day, &month, &year)) {
-        char time_str[32]; // Chuỗi định dạng thời gian
-        snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d - %02d/%02d/%04d",
-                 hour, minute, second, day, month, year);
+    // Format dữ liệu thời gian và ngày tháng thành chuỗi
+    char buffer[64];
+    snprintf(buffer, sizeof(buffer), 
+             "%04d/%02d/%02d %02d:%02d:%02d", 
+             rtc_date.year, rtc_date.month, rtc_date.date,
+             rtc_time.hours, rtc_time.minutes, rtc_time.seconds);
 
-        // Cập nhật nhãn giao diện
-        lv_label_set_text(ui_time, time_str);
-    } else {
-        lv_label_set_text(ui_time, "RTC Error!");
-    }
+    // Cập nhật nhãn giao diện với chuỗi định dạng
+    lv_label_set_text(ui_time, buffer);
 }
 
-
-
-
-void ui_start(void *parameter) {
+void ui_start(void *parameter){
   lv_init();
   lvgl_driver_init();
   ui_init();
 
   // Tạo label thời gian
-  ui_time = lv_label_create(lv_scr_act());
-  lv_obj_align(ui_time, LV_ALIGN_CENTER, 0, 0);
+
   lv_label_set_text(ui_time, "00:00 - 01/01/2024");
 
   for (;;) {
@@ -122,6 +135,9 @@ void ui_start(void *parameter) {
 
 void setup()
 {
+  // connectWiFi();
+  // connectMQTT();
+
   m5::M5Unified::config_t cfg = M5.config();
 
   cfg.serial_baudrate = 115200; // default=115200. if "Serial" is not needed, set it to 0.
@@ -143,5 +159,26 @@ void setup()
 
 void loop()
 {
-  vTaskDelete(NULL);
+      // Reconnect if the connection to MQTT is lost
+    // if (!mqtt.ping())
+    // {
+    //     if (!mqtt.connected())
+    //     {
+    //         connectMQTT();
+    //     }
+    // }
+
+    // // Publish dummy temperature data
+    // float temperature = random(20, 30); // Example temperature data
+    // if (!temperatureFeed.publish(temperature))
+    // {
+    //     Serial.println("Failed to publish temperature");
+    // }
+    // else
+    // {
+    //     Serial.println("Temperature published!");
+    // }
+
+    // delay(5000);
+  // vTaskDelete(NULL);
 }
