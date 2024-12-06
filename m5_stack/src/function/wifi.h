@@ -10,7 +10,7 @@
 #define AIO_SERVER "io.adafruit.com"
 #define AIO_SERVERPORT 1883          // Use 8883 for secure MQTT
 #define AIO_USERNAME "doquangkhanh2" // Your Adafruit IO username
-#define AIO_KEY "aio_RAVd39qB4SHcW7lWX9g33VUnEIfF"
+#define AIO_KEY "aio_uxWO214wSgBC9xly0OqwwgycUbYC"
 
 // Create a WiFiClient and Adafruit MQTT client
 WiFiClient client;
@@ -18,6 +18,8 @@ Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO
 
 // Feed to publish data to
 Adafruit_MQTT_Publish temperatureFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/temperature");
+Adafruit_MQTT_Publish humidityFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/humidity");
+Adafruit_MQTT_Publish pressureFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/atmospheric-pressure");
 
 void connectWiFi()
 {
@@ -27,7 +29,6 @@ void connectWiFi()
     {
         delay(500);
         Serial.print(".");
-        lv_obj_add_flag(ui_Image5, LV_OBJ_FLAG_HIDDEN);
     }
     Serial.println("\nWiFi connected!");
 }
@@ -43,3 +44,38 @@ void connectMQTT()
     Serial.println("\nMQTT connected!");
 }
 
+void temperature_publish(float temperature)
+{
+    if (!temperatureFeed.publish(temperature))
+    {
+        Serial.println("Failed to publish temperature");
+    }
+    else
+    {
+        Serial.println("Temperature published!");
+    }
+}
+
+void humidity_publish(float humidity)
+{
+    if (!humidityFeed.publish(humidity))
+    {
+        Serial.println("Failed to publish humidity");
+    }
+    else
+    {
+        Serial.println("Humidity published!");
+    }
+}
+
+void pressure_publish(float pressure)
+{
+    if (!pressureFeed.publish(pressure))
+    {
+        Serial.println("Failed to publish pressure");
+    }
+    else
+    {
+        Serial.println("Pressure published!");
+    }
+}

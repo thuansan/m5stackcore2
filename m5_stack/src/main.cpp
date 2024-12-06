@@ -3,7 +3,6 @@
 #include <gui/ui.h>
 #include <main.h>
 
-
 /*Change to your screen resolution*/
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 240;
@@ -12,8 +11,7 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * screenHeight / 10];
 
 /* Display flushing */
-void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
-{
+void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
@@ -26,22 +24,17 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 }
 
 /*Read the touchpad*/
-void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
-{
-  if (!M5.Display.touch())
-  {
+void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
+  if (!M5.Display.touch()) {
     Serial.println("Touch not found.");
     return;
   }
 
   uint16_t touchX = 0, touchY = 0;
 
-  if (!M5.Display.getTouch(&touchX, &touchY))
-  {
+  if (!M5.Display.getTouch(&touchX, &touchY)) {
     data->state = LV_INDEV_STATE_REL;
-  }
-  else
-  {
+  } else {
     data->state = LV_INDEV_STATE_PR;
 
     /*Set the coordinates*/
@@ -50,9 +43,12 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
   }
 }
 
+// void my_log(const char *buf)
+// {
+//   Serial.println(buf);
+// }
 
-void lvgl_driver_init()
-{
+void lvgl_driver_init() {
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
 
   /*Initialize the display*/
@@ -72,37 +68,56 @@ void lvgl_driver_init()
   indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
 
+  /*Print to serial for debug purpose*/
+  // lv_log_register_print_cb(my_log);
 }
 
-void update_time_label()
-{
-  //struct tm time_info;
-  char time_buffer[32];
+/* void update_time_label() {
+    // Biến lưu trữ thông tin thời gian và ngày tháng
 
-  // Get current time from RTC8563
-  //auto time_info = M5.Rtc.getDateTime();
-  auto t = time(nullptr);
-  auto tm = localtime(&t);
-  // Format the time as "HH:MM - DD/MM/YYYY"
+    //uint8_t hour, minute, second;
+    //uint8_t day, month;
+    uint16_t year;
+    rtc_time_t real_time;
+
+    // Kiểm tra và lấy thời gian từ RTC
+    if (M5.Rtc.getTime() && M5.Rtc.getDate()) {
+        char time_str[32]; // Chuỗi định dạng thời gian
+        snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d - %02d/%02d/%04d",);
+
+        // Cập nhật nhãn giao diện
+        lv_label_set_text(ui_time, time_str);
+    } else {
+        lv_label_set_text(ui_time, "RTC Error!");
+    }
+} */
 
 
-  snprintf(time_buffer, sizeof(time_buffer), "%02d:%02d - %02d/%02d/%04d",
-           tm->tm_hour, tm->tm_min,
-           tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900);
 
-  // Update the label with the formatted time
-  lv_label_set_text(ui_time, time_buffer);
-  lv_refr_now(NULL);
-}
 
-void ui_start()
-{
+void ui_start(void *parameter) {
   lv_init();
   lvgl_driver_init();
   ui_init();
 
   // Tạo label thời gian
+  ui_time = lv_label_create(lv_scr_act());
+  lv_obj_align(ui_time, LV_ALIGN_CENTER, 0, 0);
   lv_label_set_text(ui_time, "00:00 - 01/01/2024");
+
+  for (;;) {
+    // if (xSemaphoreTake(lvgl_mutex, 0) == pdTRUE) {
+    //   // Critical section (access shared resource here)
+    //   lv_timer_handler();
+
+    //   // Release the mutex after critical section
+    //   xSemaphoreGive(lvgl_mutex);
+    // }
+    // delay(10);
+    //update_time_label();
+    lv_timer_handler();
+    delay(5);
+  }
 }
 
 void setup()
@@ -121,7 +136,8 @@ void setup()
   cfg.led_brightness = 64;      // default= 0. system LED brightness (0=off / 255=max) (※ not NeoPixel)
   M5.begin(cfg);
   M5.Display.setRotation(1);
-  ui_start();
+  xTaskCreatePinnedToCore(ui_start, "ui_start", 4096, NULL, 5, NULL, tskNO_AFFINITY);
+
   Serial.begin(115200);
 
   // Connect to WiFi
@@ -134,14 +150,12 @@ void setup()
 
   init_bmp();
   init_sht();
-
-  M5.Rtc.setDateTime({{2024, 12, 5}, {13, 07, 56}});
 }
 
 void loop()
 {
-  // vTaskDelete(NULL);
-  //  Reconnect if the connection to MQTT is lost
+  //vTaskDelete(NULL);
+  // Reconnect if the connection to MQTT is lost
   if (!mqtt.ping())
   {
     if (!mqtt.connected())
@@ -150,8 +164,26 @@ void loop()
     }
   }
 
-  updateValue();
-  update_time_label();
-  lv_task_handler();
-  delay(2000); 
+  float temperature = sht.getTemperature();
+  float humidity = sht.getHumidity();
+  float pressure = bmp.readPressure();
+
+  char buffer[20];
+  snprintf(buffer, sizeof(buffer), "%.2f", temperature);
+  char *temp_char = buffer;
+
+  
+  // Publish dummy temperature data
+  
+  temperature_publish(temperature);
+  printTemperature(temperature);
+  lv_label_set_text(ui_temp, "99");
+
+  humidity_publish(humidity);
+  printHumidity(humidity);
+
+  pressure_publish(pressure);
+  printPressure(pressure);
+
+  delay(5000); // Publish every 5 seconds
 }
