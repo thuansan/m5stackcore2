@@ -48,6 +48,10 @@ extern lv_obj_t * ui_Label9;
 extern lv_obj_t * ui_ImgButton1;
 extern lv_obj_t * ui_Container1;
 extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_Image6;
+extern lv_obj_t * ui_Label7;
+extern lv_obj_t * ui_Label8;
+extern lv_obj_t * ui_Label10;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Screen1;
 
@@ -56,9 +60,6 @@ void ui_Screen2_screen_init(void);
 void ui_event_Screen2(lv_event_t * e);
 extern lv_obj_t * ui_Screen2;
 extern lv_obj_t * ui_Container2;
-extern lv_obj_t * ui_ImgButton2;
-extern lv_obj_t * ui_Label4;
-extern lv_obj_t * ui_Label7;
 // CUSTOM VARIABLES
 
 // EVENTS
@@ -66,13 +67,13 @@ extern lv_obj_t * ui_Label7;
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
-LV_IMG_DECLARE(ui_img_group1_png);    // assets/Group1.png
+LV_IMG_DECLARE(ui_img_layout2_png);    // assets/layout2.png
 LV_IMG_DECLARE(ui_img_weathe_png);    // assets/weathe.png
 LV_IMG_DECLARE(ui_img_999427845);    // assets/download (1).png
 LV_IMG_DECLARE(ui_img_humi_png);    // assets/humi.png
-LV_IMG_DECLARE(ui_img_wifi1_png);    // assets/wifi1.png
-LV_IMG_DECLARE(ui_img_cloud1_png);    // assets/cloud1.png
-LV_IMG_DECLARE(ui_img_655432441);    // assets/Co2-icon.png
+LV_IMG_DECLARE(ui_img_wifi_png);    // assets/wifi.png
+LV_IMG_DECLARE(ui_img_cloud_png);    // assets/cloud.png
+LV_IMG_DECLARE(ui_img_co2_png);    // assets/co2.png
 
 // UI INIT
 void ui_init(void);

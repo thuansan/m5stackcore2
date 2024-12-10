@@ -32,6 +32,10 @@ lv_obj_t * ui_Label9;
 lv_obj_t * ui_ImgButton1;
 lv_obj_t * ui_Container1;
 lv_obj_t * ui_Label2;
+lv_obj_t * ui_Image6;
+lv_obj_t * ui_Label7;
+lv_obj_t * ui_Label8;
+lv_obj_t * ui_Label10;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Screen1;
 
@@ -41,18 +45,14 @@ void ui_Screen2_screen_init(void);
 void ui_event_Screen2(lv_event_t * e);
 lv_obj_t * ui_Screen2;
 lv_obj_t * ui_Container2;
-lv_obj_t * ui_ImgButton2;
-lv_obj_t * ui_Label4;
-lv_obj_t * ui_Label7;
 // CUSTOM VARIABLES
 
 // EVENTS
 lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
-const lv_img_dsc_t * ui_imgset_cloud[1] = {&ui_img_cloud1_png};
-const lv_img_dsc_t * ui_imgset_group[1] = {&ui_img_group1_png};
-const lv_img_dsc_t * ui_imgset_wifi[1] = {&ui_img_wifi1_png};
+const lv_img_dsc_t * ui_imgset_co[1] = {&ui_img_co2_png};
+const lv_img_dsc_t * ui_imgset_layout[1] = {&ui_img_layout2_png};
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
