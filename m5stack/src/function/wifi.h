@@ -10,7 +10,7 @@
 #define AIO_SERVER "io.adafruit.com"
 #define AIO_SERVERPORT 1883          // Use 8883 for secure MQTT
 #define AIO_USERNAME "doquangkhanh2" // Your Adafruit IO username
-#define AIO_KEY "aio_xmzT868ZszPw9DdGJnmGhWNJRBEJ"
+#define AIO_KEY "aio_wTjr13Xt3ErkkA3xj0OTV8ggnbrr"
 
 // Create a WiFiClient and Adafruit MQTT client
 WiFiClient client;

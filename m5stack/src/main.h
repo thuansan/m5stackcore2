@@ -159,22 +159,25 @@ void updateValue(){
     }
     else
     {
-        Serial.print("Co2:");
+        Serial.println("Co2:");
         Serial.print(co2);
     }
 
     co2_publish(co2);
+    char buffer[20];
+    //char *temp_char = buffer;
+    sprintf(buffer, "%u", co2);
+    lv_label_set_text(ui_Label8, buffer);
+    lv_refr_now(NULL);
 
     temperature = sht.getTemperature();
     humidity = sht.getHumidity();
     float pressure = (bmp.readPressure() / 100.0F);
 
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%.1f", temperature);
-    char *temp_char = buffer;
 
     temperature_publish(temperature);
     printTemperature(temperature);
+    snprintf(buffer, sizeof(buffer), "%.1f", temperature);
     lv_label_set_text(ui_temp, buffer);
     lv_refr_now(NULL);
 
