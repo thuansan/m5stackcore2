@@ -4,6 +4,7 @@
 #include <Adafruit_BMP280.h>
 #include <Adafruit_Sensor.h>
 #include <function/wifi.h>
+<<<<<<< HEAD
 #include <SensirionI2CScd4x.h>
 
 SHTSensor sht(SHTSensor::SHT4X); // For SHT40
@@ -26,6 +27,11 @@ void printSerialNumber(uint16_t serial0, uint16_t serial1, uint16_t serial2)
     printUint16Hex(serial2);
     Serial.println();
 }
+=======
+
+SHTSensor sht(SHTSensor::SHT4X); // For SHT40
+Adafruit_BMP280 bmp;
+>>>>>>> origin/main
 
 void init_sht(void)
 {
@@ -55,6 +61,7 @@ void init_bmp(void)
     }
 }
 
+<<<<<<< HEAD
 void init_scd(void){
     uint16_t error;
     char errorMessage[256];
@@ -103,6 +110,8 @@ void printCo2(uint16_t co2){
 
 }
 
+=======
+>>>>>>> origin/main
 void printTemperature(float temperature)
 {
     Serial.print("Temperature = ");
@@ -125,6 +134,7 @@ void printPressure(float pressure)
 }
 
 void updateValue(){
+<<<<<<< HEAD
     // Publish dummy temperature data
 
     uint16_t error;
@@ -167,11 +177,19 @@ void updateValue(){
 
     temperature = sht.getTemperature();
     humidity = sht.getHumidity();
+=======
+    float temperature = sht.getTemperature();
+    float humidity = sht.getHumidity();
+>>>>>>> origin/main
     float pressure = (bmp.readPressure() / 100.0F);
 
     char buffer[20];
     snprintf(buffer, sizeof(buffer), "%.1f", temperature);
     char *temp_char = buffer;
+<<<<<<< HEAD
+=======
+    // Publish dummy temperature data
+>>>>>>> origin/main
 
     temperature_publish(temperature);
     printTemperature(temperature);

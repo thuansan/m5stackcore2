@@ -4,10 +4,10 @@ ui.c
 ui_comp_hook.c
 ui_helpers.c
 ui_events.c
-ui_img_group1_png.c
+ui_img_layout2_png.c
 ui_img_weathe_png.c
 ui_img_999427845.c
 ui_img_humi_png.c
-ui_img_wifi1_png.c
-ui_img_cloud1_png.c
-ui_img_655432441.c
+ui_img_wifi_png.c
+ui_img_cloud_png.c
+ui_img_co2_png.c

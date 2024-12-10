@@ -2,6 +2,10 @@
 #include <lvgl.h>
 #include <gui/ui.h>
 #include <main.h>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 
 /*Change to your screen resolution*/
 static const uint16_t screenWidth = 320;
@@ -69,6 +73,7 @@ void lvgl_driver_init()
   indev_drv.type = LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
+<<<<<<< HEAD
 }
 
 void update_time_label()
@@ -91,6 +96,29 @@ void update_time_label()
   lv_refr_now(NULL);
 }
 
+=======
+}
+void update_time_label()
+{
+  //struct tm time_info;
+  char time_buffer[32];
+
+  // Get current time from RTC8563
+  //auto time_info = M5.Rtc.getDateTime();
+  auto t = time(nullptr);
+  auto tm = localtime(&t);
+  // Format the time as "HH:MM - DD/MM/YYYY"
+
+  snprintf(time_buffer, sizeof(time_buffer), "%02d:%02d - %02d/%02d/%04d",
+           tm->tm_hour, tm->tm_min,
+           tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900);
+
+  // Update the label with the formatted time
+  lv_label_set_text(ui_time, time_buffer);
+  lv_refr_now(NULL);
+}
+
+>>>>>>> origin/main
 void ui_start()
 {
   lv_init();
@@ -104,7 +132,6 @@ void ui_start()
 void setup()
 {
   m5::M5Unified::config_t cfg = M5.config();
-
   cfg.serial_baudrate = 115200; // default=115200. if "Serial" is not needed, set it to 0.
   cfg.clear_display = true;     // default=true. clear the screen when begin.
   cfg.output_power = true;      // default=true. use external port 5V output.
@@ -118,12 +145,20 @@ void setup()
   M5.begin(cfg);
   M5.Display.setRotation(1);
   ui_start();
+<<<<<<< HEAD
 
   Serial.begin(115200);
 
   // Connect to WiFi
   connectWiFi();
 
+=======
+  Serial.begin(115200);
+
+  // Connect to WiFi
+  connectWiFi();
+
+>>>>>>> origin/main
   // Connect to Adafruit IO MQTT
   connectMQTT();
 
@@ -131,14 +166,23 @@ void setup()
 
   init_bmp();
   init_sht();
+<<<<<<< HEAD
   init_scd();
 
   //M5.Rtc.setDateTime({{2024, 12, 5}, {13, 07, 56}});
+=======
+
+  M5.Rtc.setDateTime({{2024, 12, 5}, {13, 07, 56}});
+>>>>>>> origin/main
 }
 
 void loop()
 {
+<<<<<<< HEAD
   //vTaskDelete(NULL);
+=======
+  // vTaskDelete(NULL);
+>>>>>>> origin/main
   //  Reconnect if the connection to MQTT is lost
   if (!mqtt.ping())
   {
@@ -151,5 +195,9 @@ void loop()
   updateValue();
   update_time_label();
   lv_task_handler();
+<<<<<<< HEAD
   delay(8000);
+=======
+  delay(2000); 
+>>>>>>> origin/main
 }
