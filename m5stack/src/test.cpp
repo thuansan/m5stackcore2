@@ -1,13 +1,8 @@
-#include <Wire.h>
-#include <SHTSensor.h>
-#include <Arduino.h>
-#include <Adafruit_BMP280.h>
-#include <Adafruit_Sensor.h>
-#include <function/wifi.h>
+/* #include <Arduino.h>
 #include <SensirionI2CScd4x.h>
+#include <Wire.h>
+#include <main.h>
 
-SHTSensor sht(SHTSensor::SHT4X); // For SHT40
-Adafruit_BMP280 bmp;
 SensirionI2CScd4x scd40;
 
 void printUint16Hex(uint16_t value)
@@ -27,35 +22,20 @@ void printSerialNumber(uint16_t serial0, uint16_t serial1, uint16_t serial2)
     Serial.println();
 }
 
-void init_sht(void)
+void setup()
 {
-    if (sht.init())
+
+    Serial.begin(115200);
+    while (!Serial)
     {
-        Serial.println("SHT40 initialized successfully!");
-    }
-    else
-    {
-        Serial.println("Failed to initialize SHT40. Check wiring!");
+        delay(100);
     }
 
-    sht.setAccuracy(SHTSensor::SHT_ACCURACY_MEDIUM);
-}
+    Wire.begin();
 
-void init_bmp(void)
-{
-    if (!bmp.begin(0x76))
-    {
-        Serial.print("Could not find a valid BMP280 sensor, check wiring!");
-        while (1)
-            ;
-    }
-    else
-    {
-        Serial.println("BMP280 initialized successfully!");
-    }
-}
+    init_bmp();
+    init_sht(); 
 
-void init_scd(void){
     uint16_t error;
     char errorMessage[256];
 
@@ -97,39 +77,14 @@ void init_scd(void){
     Serial.println("Waiting for first measurement... (5 sec)");
 }
 
-void printCo2(uint16_t co2){
-    Serial.print("CO2 = ");
-    Serial.println(co2);
-
-}
-
-void printTemperature(float temperature)
+void loop()
 {
-    Serial.print("Temperature = ");
-    Serial.print(temperature, 2);
-    Serial.println(" °C");
-}
-
-void printHumidity(float humidity)
-{
-    Serial.print("Humidity = ");
-    Serial.print(humidity, 2);
-    Serial.println(" %");
-}
-
-void printPressure(float pressure)
-{
-    Serial.print("Pressure = ");
-    Serial.print(pressure);
-    Serial.println("hPa");
-}
-
-void updateValue(){
-    // Publish dummy temperature data
-
     uint16_t error;
     char errorMessage[256];
 
+    delay(100);
+
+    // Read Measurement
     uint16_t co2 = 0;
     float temperature = 0.0f;
     float humidity = 0.0f;
@@ -161,32 +116,19 @@ void updateValue(){
     {
         Serial.print("Co2:");
         Serial.print(co2);
+        Serial.print("\t");
+        Serial.print("Temperature:");
+        Serial.print(temperature);
+        Serial.print("\t");
+        Serial.print("Humidity:");
+        Serial.println(humidity);
     }
-
-    co2_publish(co2);
 
     temperature = sht.getTemperature();
     humidity = sht.getHumidity();
     float pressure = (bmp.readPressure() / 100.0F);
 
-    char buffer[20];
-    snprintf(buffer, sizeof(buffer), "%.1f", temperature);
-    char *temp_char = buffer;
-
-    temperature_publish(temperature);
-    printTemperature(temperature);
-    lv_label_set_text(ui_temp, buffer);
-    lv_refr_now(NULL);
-
-    humidity_publish(humidity);
     printHumidity(humidity);
-    snprintf(buffer, sizeof(buffer), "%.1f", humidity);
-    lv_label_set_text(ui_humi, buffer);
-    lv_refr_now(NULL);
-
-    pressure_publish(pressure);
     printPressure(pressure);
-    snprintf(buffer, sizeof(buffer), "%.2f", pressure);
-    lv_label_set_text(ui_press, buffer);
-    lv_refr_now(NULL);
-}
+    printTemperature(temperature);
+} */

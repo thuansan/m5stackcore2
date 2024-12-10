@@ -3,7 +3,6 @@
 #include <gui/ui.h>
 #include <main.h>
 
-
 /*Change to your screen resolution*/
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 240;
@@ -50,7 +49,6 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
   }
 }
 
-
 void lvgl_driver_init()
 {
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
@@ -71,20 +69,18 @@ void lvgl_driver_init()
   indev_drv.type = LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
-
 }
 
 void update_time_label()
 {
-  //struct tm time_info;
+  // struct tm time_info;
   char time_buffer[32];
 
   // Get current time from RTC8563
-  //auto time_info = M5.Rtc.getDateTime();
+  // auto time_info = M5.Rtc.getDateTime();
   auto t = time(nullptr);
   auto tm = localtime(&t);
   // Format the time as "HH:MM - DD/MM/YYYY"
-
 
   snprintf(time_buffer, sizeof(time_buffer), "%02d:%02d - %02d/%02d/%04d",
            tm->tm_hour, tm->tm_min,
@@ -122,6 +118,7 @@ void setup()
   M5.begin(cfg);
   M5.Display.setRotation(1);
   ui_start();
+
   Serial.begin(115200);
 
   // Connect to WiFi
@@ -134,13 +131,14 @@ void setup()
 
   init_bmp();
   init_sht();
+  init_scd();
 
-  M5.Rtc.setDateTime({{2024, 12, 5}, {13, 07, 56}});
+  //M5.Rtc.setDateTime({{2024, 12, 5}, {13, 07, 56}});
 }
 
 void loop()
 {
-  // vTaskDelete(NULL);
+  //vTaskDelete(NULL);
   //  Reconnect if the connection to MQTT is lost
   if (!mqtt.ping())
   {
@@ -153,5 +151,5 @@ void loop()
   updateValue();
   update_time_label();
   lv_task_handler();
-  delay(2000); 
+  delay(8000);
 }
