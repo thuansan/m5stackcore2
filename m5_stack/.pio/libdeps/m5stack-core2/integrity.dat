@@ -1,0 +1,5 @@
+m5stack/M5Unified@0.1.13
+adafruit/Adafruit BMP280 Library
+lvgl/lvgl@8.3.11
+adafruit/Adafruit MQTT Library
+sensirion/arduino-sht
