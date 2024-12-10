@@ -10,11 +10,7 @@
 #define AIO_SERVER "io.adafruit.com"
 #define AIO_SERVERPORT 1883          // Use 8883 for secure MQTT
 #define AIO_USERNAME "doquangkhanh2" // Your Adafruit IO username
-<<<<<<< HEAD
-#define AIO_KEY "aio_wuDY58BGuWUXVfpqmlhiE7ynyCYF"
-=======
 #define AIO_KEY "aio_xmzT868ZszPw9DdGJnmGhWNJRBEJ"
->>>>>>> origin/main
 
 // Create a WiFiClient and Adafruit MQTT client
 WiFiClient client;
@@ -24,10 +20,7 @@ Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO
 Adafruit_MQTT_Publish temperatureFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/temperature");
 Adafruit_MQTT_Publish humidityFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/humidity");
 Adafruit_MQTT_Publish pressureFeed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/atmospheric-pressure");
-<<<<<<< HEAD
 Adafruit_MQTT_Publish co2Feed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/co2");
-=======
->>>>>>> origin/main
 
 void connectWiFi()
 {
@@ -86,7 +79,7 @@ void pressure_publish(float pressure)
     {
         Serial.println("Pressure published!");
     }
-<<<<<<< HEAD
+
 }
 
 void co2_publish(uint16_t co2){
@@ -97,6 +90,4 @@ void co2_publish(uint16_t co2){
     {
         Serial.print("CO2 published!");
     }
-=======
->>>>>>> origin/main
 }

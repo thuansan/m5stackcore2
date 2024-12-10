@@ -182,11 +182,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_x(ui_Label9, -119);
     lv_obj_set_y(ui_Label9, -21);
     lv_obj_set_align(ui_Label9, LV_ALIGN_CENTER);
-<<<<<<< HEAD
     lv_label_set_text(ui_Label9, "  °C |");
-=======
-    lv_label_set_text(ui_Label9, " °C");
->>>>>>> origin/main
     lv_obj_set_style_text_color(ui_Label9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Label9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Label9, &lv_font_montserrat_38, LV_PART_MAIN | LV_STATE_DEFAULT);
